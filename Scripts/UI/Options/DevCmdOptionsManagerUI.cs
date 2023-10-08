@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace DevCmdLine.UI
@@ -83,19 +84,13 @@ namespace DevCmdLine.UI
                 }
             }
 
-            // TODO: Gamepad
-            // UIUtil.SetVerticalSelectables(_uis, onLeft, null, null, null);
-            // UIUtil.ForceRebuildLayoutImmediateDeep(container);
-            //
-            // if (RaidInputManager.mode == InputMode.GamePad)
-            // {
-            //     EventSystem.current.SetSelectedGameObject(_uis[0].gameObject);
-            // }
+            SetNavigation(onLeft);
+            EventSystem.current.SetSelectedGameObject(_uis[0].gameObject);
         }
 
-        public Selectable GetEntrySelected()
+        public GameObject GetFirstOption()
         {
-            return _uis[0].GetComponent<Selectable>();
+            return _uis[0].gameObject;
         }
 
         private void OnInitialOptionSelected(int index)
@@ -173,15 +168,9 @@ namespace DevCmdLine.UI
             DevCmdOptionUI backUi = _uis[_subOptions.Count];
             backUi.gameObject.SetActive(true);
             backUi.Set("Back", GoBack, -1);
-
-            // TODO: Gamepad
-            // UIUtil.SetVerticalSelectables(_uis, _onLeft, null, null, null);
-            // UIUtil.ForceRebuildLayoutImmediateDeep(container);
-            //
-            // if (RaidInputManager.mode == InputMode.GamePad)
-            // {
-            //     EventSystem.current.SetSelectedGameObject(_uis[0].gameObject);
-            // }
+            
+            SetNavigation(_onLeft);
+            EventSystem.current.SetSelectedGameObject(_uis[0].gameObject);
         }
 
         public void GoBack()
@@ -200,6 +189,30 @@ namespace DevCmdLine.UI
                 _contexts.RemoveAt(_contexts.Count - 1);
                 _subOptions = _activeOption.Selected(_contexts);
                 SetSubOptions();
+            }
+        }
+
+        private void SetNavigation(Selectable onLeft)
+        {
+            for (int i = 0; i < _uis.Count; i++)
+            {
+                Navigation navi = default;
+                navi.mode = Navigation.Mode.Explicit;
+
+                navi.selectOnLeft = onLeft;
+
+                if (i != 0)
+                {
+                    navi.selectOnUp = _uis[i - 1].GetComponent<Selectable>();
+                }
+
+                if (i != _uis.Count - 1)
+                {
+                    navi.selectOnDown = _uis[i + 1].GetComponent<Selectable>();
+                }
+
+                Selectable selectable = _uis[i].GetComponent<Selectable>();
+                selectable.navigation = navi;
             }
         }
     }

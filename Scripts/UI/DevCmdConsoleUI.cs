@@ -15,7 +15,7 @@ namespace DevCmdLine.UI
 
         public bool isOpen => _isOpen;
 
-        public void OpenConsole()
+        public void OpenConsole(DevCmdStartingSelectedButton starting)
         {
             if (_isOpen)
             {
@@ -30,12 +30,24 @@ namespace DevCmdLine.UI
             _input.caretPosition = 0;
 
             _optionsUI.SetInitials(_input);
-            
-            // TODO: Gamepad
+
             if (EventSystem.current != null)
             {
-                EventSystem.current.SetSelectedGameObject(_input.gameObject);
-                _input.OnPointerClick(new PointerEventData(EventSystem.current));
+                switch (starting)
+                {
+                    case DevCmdStartingSelectedButton.Input:
+                        EventSystem.current.SetSelectedGameObject(_input.gameObject);
+                        _input.OnPointerClick(new PointerEventData(EventSystem.current));
+                        break;
+                    
+                    case DevCmdStartingSelectedButton.Option:
+                        EventSystem.current.SetSelectedGameObject(_optionsUI.GetFirstOption());
+                        break;
+                    
+                    default:
+                        Debug.LogError("[DevCmdLine] Unexpected enum type!");
+                        break;
+                }
             }
         }
 
@@ -50,7 +62,7 @@ namespace DevCmdLine.UI
             _container.SetActive(false);
         }
 
-        public void ToggleConsole()
+        public void ToggleConsole(DevCmdStartingSelectedButton starting)
         {
             if (_isOpen)
             {
@@ -58,7 +70,7 @@ namespace DevCmdLine.UI
             }
             else
             {
-                OpenConsole();
+                OpenConsole(starting);
             }
         }
 
@@ -176,38 +188,45 @@ namespace DevCmdLine.UI
                 {
                     if (EventSystem.current.currentSelectedGameObject == _input.gameObject)
                     {
-                        // TODO: GAMEPAD
-                        // if (RaidInputManager.input.Debug.Back.triggered)
-                        // {
-                        //     EventSystem.current.SetSelectedGameObject(_optionsUI.GetEntrySelected().gameObject);
-                        //     return;
-                        // }
-
-                        bool inputEnter;
-                        bool inputComplete;
-                        bool inputUpHistory;
-                        bool inputDownHistory;
+                        bool inputEnter = false;
+                        bool inputComplete = false;
+                        bool inputUpHistory = false;
+                        bool inputDownHistory = false;
+                        bool inputToOptions = false;
                         
 #if ENABLE_INPUT_SYSTEM
-                        if (UnityEngine.InputSystem.Keyboard.current == null)
+                        if (UnityEngine.InputSystem.Keyboard.current != null)
                         {
-                            return;
+                            inputEnter = UnityEngine.InputSystem.Keyboard.current.enterKey.wasPressedThisFrame ||
+                                         UnityEngine.InputSystem.Keyboard.current.numpadEnterKey.wasPressedThisFrame;
+                        
+                            inputComplete = UnityEngine.InputSystem.Keyboard.current.tabKey.wasPressedThisFrame;
+                            inputUpHistory = UnityEngine.InputSystem.Keyboard.current.upArrowKey.wasPressedThisFrame;
+                            inputDownHistory = UnityEngine.InputSystem.Keyboard.current.downArrowKey.wasPressedThisFrame;
                         }
 
-                        inputEnter = UnityEngine.InputSystem.Keyboard.current.enterKey.wasPressedThisFrame ||
-                                     UnityEngine.InputSystem.Keyboard.current.numpadEnterKey.wasPressedThisFrame;
-                        
-                        inputComplete = UnityEngine.InputSystem.Keyboard.current.tabKey.wasPressedThisFrame;
-                        inputUpHistory = UnityEngine.InputSystem.Keyboard.current.upArrowKey.wasPressedThisFrame;
-                        inputDownHistory = UnityEngine.InputSystem.Keyboard.current.downArrowKey.wasPressedThisFrame;
+                        if (UnityEngine.InputSystem.Gamepad.current != null)
+                        {
+                            inputEnter = inputEnter || UnityEngine.InputSystem.Gamepad.current.buttonSouth.wasPressedThisFrame;
+                            
+                            inputUpHistory = inputUpHistory || UnityEngine.InputSystem.Gamepad.current.leftStick.up.wasPressedThisFrame ||
+                                             UnityEngine.InputSystem.Gamepad.current.dpad.up.wasPressedThisFrame;
+                            
+                            inputDownHistory = inputDownHistory || UnityEngine.InputSystem.Gamepad.current.leftStick.down.wasPressedThisFrame ||
+                                               UnityEngine.InputSystem.Gamepad.current.dpad.down.wasPressedThisFrame;
+                            
+                            inputToOptions = inputToOptions || UnityEngine.InputSystem.Gamepad.current.buttonEast.wasPressedThisFrame ||
+                                             UnityEngine.InputSystem.Gamepad.current.leftStick.right.wasPressedThisFrame ||
+                                             UnityEngine.InputSystem.Gamepad.current.dpad.right.wasPressedThisFrame;
+                        }
 #else
                         inputEnter = Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter);
                         inputComplete = Input.GetKeyDown(KeyCode.Tab);
                         inputUpHistory = Input.GetKeyDown(KeyCode.UpArrow);
                         inputDownHistory = Input.GetKeyDown(KeyCode.DownArrow);
+                        inputToOptions = false;
 #endif
-
-
+                        
                         if (inputEnter)
                         {
                             try
@@ -234,6 +253,10 @@ namespace DevCmdLine.UI
                                     _input.OnPointerClick(new PointerEventData(EventSystem.current));
                                 }
                             }
+                        }
+                        else if (inputToOptions)
+                        {
+                            EventSystem.current.SetSelectedGameObject(_optionsUI.GetFirstOption());
                         }
                         else if (inputComplete)
                         {
@@ -284,11 +307,23 @@ namespace DevCmdLine.UI
                     }
                     else
                     {
-                        // TODO: Gamepad
-                        // if (RaidInputManager.input.Debug.Back.triggered)
-                        // {
-                        //     _optionsUI.GoBack();
-                        // }
+                        bool inputBackOptions = false;
+                        
+#if ENABLE_INPUT_SYSTEM
+                        if (UnityEngine.InputSystem.Keyboard.current != null)
+                        {
+                            inputBackOptions = UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame;
+                        }
+
+                        if (UnityEngine.InputSystem.Gamepad.current != null)
+                        {
+                            inputBackOptions = inputBackOptions || UnityEngine.InputSystem.Gamepad.current.buttonEast.wasPressedThisFrame;
+                        }
+#endif
+                        if (inputBackOptions)
+                        {
+                            _optionsUI.GoBack();
+                        }
                     }
                 }
             }

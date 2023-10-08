@@ -13,12 +13,20 @@ namespace DevCmdLine
 #if ENABLE_INPUT_SYSTEM
             if (UnityEngine.InputSystem.Keyboard.current != null &&
                 UnityEngine.InputSystem.Keyboard.current.backquoteKey.wasPressedThisFrame)
+            {
+                consoleUI.ToggleConsole(DevCmdStartingSelectedButton.Input);
+            }
+            else if (UnityEngine.InputSystem.Gamepad.current != null &&
+                     UnityEngine.InputSystem.Gamepad.current.selectButton.wasPressedThisFrame)
+            {
+                consoleUI.ToggleConsole(DevCmdStartingSelectedButton.Option);
+            }
 #else
             if (Input.GetKeyDown(KeyCode.Tilde))
-#endif
             {
-                consoleUI.ToggleConsole();
+                consoleUI.ToggleConsole(DevCmdStartingSelectedButton.Input);
             }
+#endif
         }
     }
 }
