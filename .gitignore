@@ -1,0 +1,102 @@
+# =============== #
+# Unity generated #
+# =============== #
+[Tt]emp/
+[Oo]bj/
+[Bb]uild
+[Bb]uild.meta
+[Ll]ibrary/
+UserSettings/
+sysinfo.txt
+.app
+
+Assets/SceneDependencyCache*
+Assets/StreamingAssets/aa*
+Assets/AddressableAssetsData/Windows*
+Assets/AddressableAssetsData/Switch*
+ 
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+[Ee]xported[Oo]bj/
+*.userprefs
+*.csproj
+*.csproj.meta
+*.pidb
+*.suo
+*.sln*
+*.user
+*.unityproj
+*.booproj
+.vscode/
+VSCode*
+VSCode/
+.vs/
+*.csproj.DotSettings
+ 
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+[Tt]humbs.db
+.zip
+*.zip*
+
+# ======= #
+# Other   #
+# ======= #
+out/
+[Ll]ogs/
+[Ll]ogs~/
+[Tt]estFiles~/
+build-process/
+PerformanceTestRunInfo.json
+PerformanceTestRunInfo.json.meta
+.mayaSwatches*
+
+.idea/*
+Assets/Plugins/Editor/JetBrains/
+Assets/Plugins/Editor/JetBrains.meta
+
+# ======= #
+# Switch  #
+# ======= #
+SwitchIL2CPPCache/*
+SwitchIL2CPPStats/*
+switch_saves/*
+builds/
+switch_files/
+Assets/Plugins/FMOD/Resources/FMODStudioCache.asset
+
+# ======= #
+# FMOD    #
+# ======= #
+# Never ignore DLLs in the FMOD subfolder.
+!/[Aa]ssets/Plugins/FMOD/**/lib/*
+
+# Don't ignore images and gizmos used by FMOD in the Unity Editor.
+!/[Aa]ssets/Gizmos/FMOD/*
+!/[Aa]ssets/Editor Default Resources/FMOD/*
+                    
+# Ignore the Cache folder since it is updated locally.
+/[Aa]ssets/Plugins/FMOD/Cache/*
+                    
+# Ignore bank files in the StreamingAssets folder.
+/[Aa]ssets/StreamingAssets/**/*.bank
+/[Aa]ssets/StreamingAssets/**/*.bank.meta
+                    
+# If the source bank files are kept outside of the StreamingAssets folder then these can be ignored.
+# Log files can be ignored.
+fmod_editor.log
+fmod.log
+
+other/fmod/**/.*
+!other/fmod/raid2021/Build
+!Packages/com.unity.addressables@1.21.14/Editor/Build
+!Packages/com.unity.addressables@1.21.14/Editor/Build.meta
+!Packages/com.unity.addressables@1.21.14/Tests/Editor/Build
+!Packages/com.unity.addressables@1.21.14/Tests/Editor/Build.meta
