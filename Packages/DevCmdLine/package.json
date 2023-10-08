@@ -1,0 +1,24 @@
+{
+    "name": "com.cj.devcmdline",
+    "version": "0.0.1",
+    "displayName": "Dev Cmd Line",
+    "description": "Dev command line for runtime",
+    "unity": "2020.3",
+    "unityRelease": "17f1",
+    "dependencies": {
+      "com.unity.textmeshpro": "3.0.6"
+   },
+   "keywords": [
+      "debug",
+      "cmd",
+      "command",
+      "console",
+      "development",
+      "terminal"
+    ],
+    "author": {
+      "name": "CJ",
+      "email": "cjddmut@gmail.com",
+      "url": "https://github.com/cjddmut/unity-dev-cmd-line"
+    }
+  }
