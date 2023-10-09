@@ -43,9 +43,8 @@ namespace DevCmdLine.UI
             {
                 GameObject item = options[i];
 
-                if (item == null)
+                if (item == null || !item.activeInHierarchy)
                 {
-                    Debug.LogWarning("Null entry in initial options", this);
                     continue;
                 }
 
@@ -85,7 +84,6 @@ namespace DevCmdLine.UI
             }
 
             SetNavigation(onLeft);
-            EventSystem.current.SetSelectedGameObject(_uis[0].gameObject);
         }
 
         public GameObject GetFirstOption()
@@ -183,6 +181,7 @@ namespace DevCmdLine.UI
             if (_contexts.Count == 0)
             {
                 SetInitials(_onLeft);
+                EventSystem.current.SetSelectedGameObject(_uis[0].gameObject);
             }
             else
             {
