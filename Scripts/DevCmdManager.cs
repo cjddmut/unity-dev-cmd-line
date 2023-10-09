@@ -27,6 +27,8 @@ namespace DevCmdLine
                     return;
                 }
 
+                argsStr = Regex.Replace(argsStr.Trim(' '), MULTIPLE_SPACES_PATTERN, " ");
+
                 if (info.regexPatterns.Length != 0)
                 {
                     bool passes = false;
@@ -200,6 +202,9 @@ namespace DevCmdLine
         
         //language=regexp
         private const string ARG_VALUE_INC_MATCHES_PATTERN = @"(?:(?<arg_inc_value>[^ \-""'\n][^ ""'\n]*)|(?:(?<quote>[""']).*?\k<quote>)|[""'](?<arg_inc_quote>.*))";
+        
+        //language=regexp
+        private const string MULTIPLE_SPACES_PATTERN = @"[ ]{2,}(?=([^""]*""[^""]*"")*[^""]*$)(?=([^']*'[^']*')*[^']*$)";
         
         private struct DevCmdInfo
         {
