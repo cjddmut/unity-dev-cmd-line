@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace DevCmdLine.UI
 {
     internal class DevCmdConsoleClickCatch : MonoBehaviour, IPointerClickHandler
     {
+        public UnityEvent onClick;
+        
         private DevCmdConsoleUI _ui;
 
         private void Awake()
@@ -20,7 +23,10 @@ namespace DevCmdLine.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            _ui.CloseConsole();
+            if (onClick != null)
+            {
+                onClick.Invoke();
+            }
         }
     }
 }

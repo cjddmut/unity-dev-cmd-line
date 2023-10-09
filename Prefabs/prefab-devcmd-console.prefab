@@ -1259,6 +1259,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8208967541a31344a001f90f56629e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8236005254674291630}
+        m_TargetAssemblyTypeName: DevCmdLine.UI.DevCmdConsoleUI, DevCmdLine
+        m_MethodName: CloseConsole
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &5927392131965595331
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1661,7 +1676,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5618640835131310141}
   m_HandleRect: {fileID: 2641698856612989642}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
