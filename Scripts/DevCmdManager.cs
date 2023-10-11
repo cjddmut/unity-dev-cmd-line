@@ -188,7 +188,7 @@ namespace DevCmdLine
             @"^ *(?<cmd>[a-zA-Z][a-zA-Z0-9\-_]*) *(?<args>(?:(?:-[a-zA-Z][a-zA-Z0-9\-_]*(?: +|$)?)?(?:(?:[^ \-""'\n][^ ""'\n]*|(?<quote>[""']).*?\k<quote>)(?: +|$))*)*)? *$";
 
         //language=regexp
-        private const string ARGS_MATCHES_PATTERN = @"(?:-(?<arg_name>[a-zA-Z][a-zA-Z0-9\-_]*)(?: +|$)?)?(?<arg_values>(?:(?:[^ \-""'\n][^ ""'\n]*|(?<quote>[""']).*?\k<quote>) *)+)";
+        private const string ARGS_MATCHES_PATTERN = @"(?:-(?<arg_name>[a-zA-Z][a-zA-Z0-9\-_]*)(?: +|$)?)?(?<arg_values>(?:(?:[^ \-""""'\n][^ """"'\n]*|(?<quote>[""""']).*?\k<quote>) *)+)?";
 
         //language=regexp
         private const string ARG_VALUE_MATCHES_PATTERN = @"(?:(?<arg_value>[^ \-""'\n][^ ""'\n]*)|(?:(?<quote>[""'])(?<arg_quoted>.*?)\k<quote>))";
