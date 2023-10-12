@@ -15,7 +15,7 @@ namespace DevCmdLine.UI
 
         private List<DevCmdOptionUI> _uis = new List<DevCmdOptionUI>();
 
-        private IDevCmdOptionUI _activeOption;
+        private DevCmdOptionUIBase _activeOption;
         private List<object> _contexts = new List<object>();
         private List<DevCmdSubOption> _subOptions;
         private Selectable _onLeft;
@@ -48,7 +48,7 @@ namespace DevCmdLine.UI
                     continue;
                 }
 
-                IDevCmdOptionUI option = item.GetComponent<IDevCmdOptionUI>();
+                DevCmdOptionUIBase option = item.GetComponent<DevCmdOptionUIBase>();
 
                 if (option == null)
                 {
@@ -93,7 +93,7 @@ namespace DevCmdLine.UI
 
         private void OnInitialOptionSelected(int index)
         {
-            IDevCmdOptionUI option = options[index].GetComponent<IDevCmdOptionUI>();
+            DevCmdOptionUIBase option = options[index].GetComponent<DevCmdOptionUIBase>();
             _activeOption = option;
             _subOptions = option.Selected(_contexts);
 
@@ -102,8 +102,14 @@ namespace DevCmdLine.UI
 
         private void OnInitialEndSelected(int index)
         {
-            IDevCmdOptionUI option = options[index].GetComponent<IDevCmdOptionUI>();
+            DevCmdOptionUIBase option = options[index].GetComponent<DevCmdOptionUIBase>();
             string cmd = option.ConstructCmd(_contexts);
+            
+            if (option.closeOnExecution)
+            {
+                DevCmdConsole.CloseConsoleWithCallback();
+            }
+
             DevCmdManager.RunCommand(cmd);
         }
 

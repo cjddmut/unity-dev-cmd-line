@@ -4,73 +4,47 @@ using System.ComponentModel;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace DevCmdLine.UI
 {
-    public class DevCmdConsoleUI : MonoBehaviour
+    public class DevCmdConsole : MonoBehaviour
     {
         #region Public
 
         public bool isOpen => _isOpen;
 
-        public void OpenConsole(DevCmdStartingSelectedButton starting)
+        public static void OpenConsole(DevCmdStartingSelectedButton starting)
         {
-            if (_isOpen)
+            if (_instance != null)
             {
-                return;
-            }
-            
-            _isOpen = true;
-            
-            _container.SetActive(true);
-
-            _input.text = "";
-            _input.caretPosition = 0;
-
-            _optionsUI.SetInitials(_input);
-
-            if (EventSystem.current != null)
-            {
-                switch (starting)
-                {
-                    case DevCmdStartingSelectedButton.Input:
-                        EventSystem.current.SetSelectedGameObject(_input.gameObject);
-                        _input.OnPointerClick(new PointerEventData(EventSystem.current));
-                        break;
-                    
-                    case DevCmdStartingSelectedButton.Option:
-                        EventSystem.current.SetSelectedGameObject(_optionsUI.GetFirstOption());
-                        break;
-                    
-                    default:
-                        Debug.LogError("[DevCmdLine] Unexpected enum type!");
-                        break;
-                }
+                _instance.OpenConsoleInternal(starting);
             }
         }
 
-        public void CloseConsole()
+        public static void CloseConsole()
         {
-            if (!_isOpen)
+            if (_instance != null)
             {
-                return;
+                _instance.CloseConsoleInternal(false);
             }
-            
-            _isOpen = false;
-            _container.SetActive(false);
         }
 
-        public void ToggleConsole(DevCmdStartingSelectedButton starting)
+        public static void ToggleConsole(DevCmdStartingSelectedButton starting)
         {
-            if (_isOpen)
+            if (_instance != null)
             {
-                CloseConsole();
+                _instance.ToggleConsoleInternal(starting);
             }
-            else
+        }
+
+        public static void CloseConsoleWithCallback()
+        {
+            if (_instance != null)
             {
-                OpenConsole(starting);
+                _instance.CloseConsoleInternal(true);
             }
         }
 
@@ -90,6 +64,9 @@ namespace DevCmdLine.UI
         [SerializeField]
         private Scrollbar _scrollbar;
 
+        [SerializeField]
+        private UnityEvent _onConsoleClosed;
+        
         [Space]
         [SerializeField]
         private DevCmdOptionsManagerUI _optionsUI;
@@ -104,6 +81,8 @@ namespace DevCmdLine.UI
         private static List<string> _entries = new List<string>();
         private static List<string> _cmdHistory = new List<string>();
         private static StringBuilder _outputBuilder = new StringBuilder();
+
+        private static DevCmdConsole _instance;
         
         private const int MAX_CHARACTERS_COUNT = 9999;
 
@@ -152,6 +131,7 @@ namespace DevCmdLine.UI
         {
             _container.SetActive(false);
             _input.onValueChanged.AddListener(OnResetTabbed);
+            _instance = this;
         }
 
         private void Update()
@@ -333,7 +313,71 @@ namespace DevCmdLine.UI
         {
             _hasTabbedOnce = false;
         }
+        
+        private void OpenConsoleInternal(DevCmdStartingSelectedButton starting)
+        {
+            if (_isOpen)
+            {
+                return;
+            }
+            
+            _isOpen = true;
+            
+            _container.SetActive(true);
 
+            _input.text = "";
+            _input.caretPosition = 0;
+
+            _optionsUI.SetInitials(_input);
+
+            if (EventSystem.current != null)
+            {
+                switch (starting)
+                {
+                    case DevCmdStartingSelectedButton.Input:
+                        EventSystem.current.SetSelectedGameObject(_input.gameObject);
+                        _input.OnPointerClick(new PointerEventData(EventSystem.current));
+                        break;
+                    
+                    case DevCmdStartingSelectedButton.Option:
+                        EventSystem.current.SetSelectedGameObject(_optionsUI.GetFirstOption());
+                        break;
+                    
+                    default:
+                        Debug.LogError("[DevCmdLine] Unexpected enum type!");
+                        break;
+                }
+            }
+        }
+
+        private void CloseConsoleInternal(bool invokeCallback)
+        {
+            if (!_isOpen)
+            {
+                return;
+            }
+            
+            _isOpen = false;
+            _container.SetActive(false);
+
+            if (invokeCallback && _onConsoleClosed != null)
+            {
+                _onConsoleClosed.Invoke();
+            }
+        }
+
+        private void ToggleConsoleInternal(DevCmdStartingSelectedButton starting)
+        {
+            if (_isOpen)
+            {
+                CloseConsoleInternal(false);
+            }
+            else
+            {
+                OpenConsoleInternal(starting);
+            }
+        }
+        
         #endregion
     }
 }

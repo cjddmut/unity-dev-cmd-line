@@ -5,8 +5,6 @@ namespace DevCmdLine
 {
     internal class DevCmdToggleSimple : MonoBehaviour
     {
-        public DevCmdConsoleUI consoleUI;
-        
         private void Update()
         {
             
@@ -14,17 +12,17 @@ namespace DevCmdLine
             if (UnityEngine.InputSystem.Keyboard.current != null &&
                 UnityEngine.InputSystem.Keyboard.current.backquoteKey.wasPressedThisFrame)
             {
-                consoleUI.ToggleConsole(DevCmdStartingSelectedButton.Input);
+                DevCmdConsole.ToggleConsole(DevCmdStartingSelectedButton.Input);
             }
             else if (UnityEngine.InputSystem.Gamepad.current != null &&
                      UnityEngine.InputSystem.Gamepad.current.selectButton.wasPressedThisFrame)
             {
-                consoleUI.ToggleConsole(DevCmdStartingSelectedButton.Option);
+                DevCmdConsole.ToggleConsole(DevCmdStartingSelectedButton.Option);
             }
 #else
             if (Input.GetKeyDown(KeyCode.Tilde))
             {
-                consoleUI.ToggleConsole(DevCmdStartingSelectedButton.Input);
+                DevCmdConsole.ToggleConsole(DevCmdStartingSelectedButton.Input);
             }
 #endif
         }
