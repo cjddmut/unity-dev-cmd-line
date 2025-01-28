@@ -14,7 +14,18 @@ namespace DevCmdLine.UI
     {
         #region Public
 
-        public bool isOpen => _isOpen;
+        public static bool isOpen
+        {
+            get
+            {
+                if (_instance != null)
+                {
+                    return _instance._isOpen;
+                }
+
+                return false;
+            }
+        }
 
         public static void OpenConsole(DevCmdStartingSelectedButton starting)
         {
