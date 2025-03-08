@@ -130,7 +130,7 @@ namespace DevCmdLine.UI
                     case LogType.Error:
                     case LogType.Assert:
                     case LogType.Exception:
-                        entry = $"<color=red>{condition}\n{stacktrace}</color>";
+                        entry = $"<color=red>{condition}</color>";
                         break;
 
                     default:
