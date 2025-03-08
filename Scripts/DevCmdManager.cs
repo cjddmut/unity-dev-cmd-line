@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using DevCmdLine.UI;
 using UnityEngine;
 
 namespace DevCmdLine
@@ -868,6 +869,18 @@ Usage:
                     Debug.LogWarning($"Command {args[0].value} not found");
                 }
             }
+        }
+        
+        [DevCmd(
+            "clear",
+            @"Clears the console.
+
+Usage:
+    clear")]
+        [DevCmdVerify("^$")]
+        private static void DevCmdClear(DevCmdArg[] args)
+        {
+            DevCmdConsole.ClearConsole();
         }
 
         [DevCmdCompleteFunction("help", "", DevCmdCompleteFlags.Default)]

@@ -10,10 +10,10 @@ namespace DevCmdLine.UI
         public RectTransform container;
         public GameObject template;
 
-        [Space]
-        public GameObject[] options;
+        public Transform optionsContainer;
 
         private List<DevCmdOptionUI> _uis = new List<DevCmdOptionUI>();
+        private List<DevCmdOptionUIBase> _options = new List<DevCmdOptionUIBase>();
 
         private DevCmdOptionUIBase _activeOption;
         private List<object> _contexts = new List<object>();
@@ -39,9 +39,10 @@ namespace DevCmdLine.UI
 
             int numCreated = 0;
 
-            for (int i = 0; i < options.Length; i++)
+            for (int i = 0; i < optionsContainer.transform.childCount; i++)
             {
-                GameObject item = options[i];
+                // Might be non-deterministic in order...
+                GameObject item = optionsContainer.transform.GetChild(i).gameObject;
 
                 if (item == null || !item.activeInHierarchy)
                 {
@@ -55,6 +56,8 @@ namespace DevCmdLine.UI
                     Debug.LogWarning("Initial option does not implement IDevConsoleOptionUI", item);
                     continue;
                 }
+                
+                _options.Add(option);
 
                 if (option.TryGetInitial(out string str, out bool isEnd))
                 {
@@ -93,7 +96,7 @@ namespace DevCmdLine.UI
 
         private void OnInitialOptionSelected(int index)
         {
-            DevCmdOptionUIBase option = options[index].GetComponent<DevCmdOptionUIBase>();
+            DevCmdOptionUIBase option = _options[index];
             _activeOption = option;
             _subOptions = option.Selected(_contexts);
 
@@ -102,7 +105,7 @@ namespace DevCmdLine.UI
 
         private void OnInitialEndSelected(int index)
         {
-            DevCmdOptionUIBase option = options[index].GetComponent<DevCmdOptionUIBase>();
+            DevCmdOptionUIBase option = _options[index];
             string cmd = option.ConstructCmd(_contexts);
             
             if (option.closeOnExecution)

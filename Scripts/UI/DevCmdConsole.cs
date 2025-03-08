@@ -59,6 +59,14 @@ namespace DevCmdLine.UI
             }
         }
 
+        public static void ClearConsole()
+        {
+            if (_instance != null)
+            {
+                _instance.ClearConsoleInternal();
+            }
+        }
+
         #endregion
 
         #region Private
@@ -386,6 +394,17 @@ namespace DevCmdLine.UI
             else
             {
                 OpenConsoleInternal(starting);
+            }
+        }
+
+        private void ClearConsoleInternal()
+        {
+            lock (_entries)
+            {
+                _entries.Clear();
+                _entriesBuilt = 0;
+                _output.text = "";
+                _outputBuilder.Clear();
             }
         }
         
