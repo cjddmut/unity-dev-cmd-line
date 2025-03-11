@@ -108,6 +108,10 @@ namespace DevCmdLine.UI
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void Initialize()
         {
+#if UNITY_EDITOR
+            Application.logMessageReceivedThreaded -= OnLogReceived;
+#endif
+            
             Application.logMessageReceivedThreaded += OnLogReceived;
         }
 
