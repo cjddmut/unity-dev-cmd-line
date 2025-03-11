@@ -72,17 +72,19 @@ namespace DevCmdLine.UI
                         _uis.Add(obj.GetComponent<DevCmdOptionUI>());
                     }
 
-                    DevCmdOptionUI ui = _uis[numCreated++];
+                    DevCmdOptionUI ui = _uis[numCreated];
                     ui.gameObject.SetActive(true);
 
                     if (isEnd)
                     {
-                        ui.Set($"{str} [END]", OnInitialEndSelected, i);
+                        ui.Set($"{str} [END]", OnInitialEndSelected, numCreated);
                     }
                     else
                     {
-                        ui.Set(str, OnInitialOptionSelected, i);
+                        ui.Set(str, OnInitialOptionSelected, numCreated);
                     }
+
+                    numCreated++;
                 }
             }
 
