@@ -110,6 +110,10 @@ namespace DevCmdLine.UI
         {
 #if UNITY_EDITOR
             Application.logMessageReceivedThreaded -= OnLogReceived;
+            
+            _entries.Clear();
+            _cmdHistory.Clear();
+            _outputBuilder.Clear();
 #endif
             
             Application.logMessageReceivedThreaded += OnLogReceived;

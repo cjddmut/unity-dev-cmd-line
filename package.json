@@ -1,6 +1,6 @@
 {
   "name": "com.cj.devcmdline",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "displayName": "Dev Cmd Line",
   "description": "Dev command line for runtime",
   "unity": "2020.3",
