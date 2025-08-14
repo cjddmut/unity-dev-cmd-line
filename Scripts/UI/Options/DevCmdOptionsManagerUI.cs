@@ -162,8 +162,10 @@ namespace DevCmdLine.UI
             for (int i = 0; i < _subOptions.Count; i++)
             {
                 DevCmdSubOption option = _subOptions[i];
+                
                 DevCmdOptionUI ui = _uis[i];
                 ui.gameObject.SetActive(true);
+                ui.transform.SetSiblingIndex(i);
 
                 if (option.isEnd)
                 {
