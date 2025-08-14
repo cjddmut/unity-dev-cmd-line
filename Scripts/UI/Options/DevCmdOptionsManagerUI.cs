@@ -12,6 +12,8 @@ namespace DevCmdLine.UI
 
         public Transform optionsContainer;
 
+        public GridLayoutGroup gridGroup;
+
         private List<DevCmdOptionUI> _uis = new List<DevCmdOptionUI>();
         private List<DevCmdOptionUIBase> _options = new List<DevCmdOptionUIBase>();
 
@@ -204,21 +206,54 @@ namespace DevCmdLine.UI
 
         private void SetNavigation(Selectable onLeft)
         {
+            int rowCount = gridGroup.constraintCount;
+            
             for (int i = 0; i < _uis.Count; i++)
             {
+                int x = i / rowCount;
+                int y = i % rowCount;
+                
                 Navigation navi = default;
                 navi.mode = Navigation.Mode.Explicit;
-
-                navi.selectOnLeft = onLeft;
-
-                if (i != 0)
+                
+                if (x == 0)
                 {
-                    navi.selectOnUp = _uis[i - 1].GetComponent<Selectable>();
+                    navi.selectOnLeft = onLeft;
+                }
+                else
+                {
+                    navi.selectOnLeft = _uis[(x - 1) * rowCount + y].GetComponent<Selectable>();
                 }
 
-                if (i != _uis.Count - 1)
+                if (y == 0)
                 {
-                    navi.selectOnDown = _uis[i + 1].GetComponent<Selectable>();
+                    navi.selectOnUp = null;
+                }
+                else
+                {
+                    navi.selectOnUp = _uis[x * rowCount + (y - 1)].GetComponent<Selectable>();
+                }
+
+                int rightIndex = (x + 1) * rowCount + y;
+                
+                if (rightIndex < _uis.Count)
+                {
+                    navi.selectOnRight = _uis[rightIndex].GetComponent<Selectable>();
+                }
+                else
+                {
+                    navi.selectOnRight = null;
+                }
+
+                int downIndex = x * rowCount + y + 1;
+                
+                if (downIndex < _uis.Count)
+                {
+                    navi.selectOnDown = _uis[downIndex].GetComponent<Selectable>();
+                }
+                else
+                {
+                    navi.selectOnDown = null;
                 }
 
                 Selectable selectable = _uis[i].GetComponent<Selectable>();
