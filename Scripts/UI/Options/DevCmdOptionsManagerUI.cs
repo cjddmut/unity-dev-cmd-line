@@ -247,7 +247,7 @@ namespace DevCmdLine.UI
 
                 int downIndex = x * rowCount + y + 1;
                 
-                if (downIndex < _uis.Count)
+                if (y + 1 < rowCount && downIndex < _uis.Count)
                 {
                     navi.selectOnDown = _uis[downIndex].GetComponent<Selectable>();
                 }
