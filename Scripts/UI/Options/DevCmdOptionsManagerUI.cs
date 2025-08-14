@@ -155,6 +155,7 @@ namespace DevCmdLine.UI
                 obj.transform.localPosition = Vector3.zero;
                 obj.transform.localScale = Vector3.one;
                 obj.transform.localRotation = Quaternion.identity;
+                obj.transform.SetSiblingIndex(_uis.Count);
 
                 _uis.Add(obj.GetComponent<DevCmdOptionUI>());
             }
@@ -165,7 +166,6 @@ namespace DevCmdLine.UI
                 
                 DevCmdOptionUI ui = _uis[i];
                 ui.gameObject.SetActive(true);
-                ui.transform.SetSiblingIndex(i);
 
                 if (option.isEnd)
                 {
