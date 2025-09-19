@@ -23,7 +23,7 @@ namespace DevCmdLine.UI
 #endif
         public string enumType;
 
-        private static string[] _enumValues;
+        private string[] _enumValues;
         
 #if ODIN_INSPECTOR
         private static Type[] _enumTypes;
@@ -84,7 +84,7 @@ namespace DevCmdLine.UI
 #if ODIN_INSPECTOR
     private ValueDropdownList<string> ValueDropDownGetTypes()
         {
-            if (_enumValues == null)
+            if (_enumTypes == null)
             {
                 Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
