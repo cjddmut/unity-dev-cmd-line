@@ -80,11 +80,11 @@ namespace DevCmdLine.UI
 
                     if (isEnd)
                     {
-                        ui.Set($"{str} [END]", OnInitialEndSelected, numCreated);
+                        ui.Set($"{str} [END]", OnInitialEndSelected, _options.Count - 1);
                     }
                     else
                     {
-                        ui.Set(str, OnInitialOptionSelected, numCreated);
+                        ui.Set(str, OnInitialOptionSelected, _options.Count - 1);
                     }
 
                     numCreated++;
